@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  blog_app_backend:
+    container_name: blog_app_backend_c
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - database_sql
+    restart: always
+    environment:
+      DB_URL : jdbc:mysql://database_sql:3307/blog
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  database_sql:
+    container_name: sql_c
+    image: "mysql:8"
+    ports:
+      - 3307:3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD : root
+      MYSQL_PASSWORD : root
+    volumes:
+      - blogvol:/var/lib/mysql
+
+volumes:
+  blogvol:
